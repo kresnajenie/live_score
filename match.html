@@ -1,0 +1,60 @@
+<html>
+<body>
+<h1>test</h1>
+
+Match ID:<label id="match_id"></label><br>
+Home Team: <label id="home_team"></label><br>
+Away Team: <label id="away_team"></label><br>
+Home Logo: <label id="home_logo"></label><br>
+Away Logo: <label id="away_logo"></label><br>
+Home Score: <label id="home_score"></label><br>
+Away Score: <label id="away_score"></label><br>
+Half: <label id="half"></label><br>
+
+<script>
+
+var getJSON = function(url, callback) {
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    
+    xhr.onload = function() {
+    
+        var status = xhr.status;
+        
+        if (status == 200) {
+            callback(null, xhr.response);
+        } else {
+            callback(status);
+        }
+    };
+    
+    xhr.send();
+};
+
+getJSON('https://apia.jaskapital.com/matches?match_id=100',  function(err, data) {
+    
+    if (err != null) {
+        console.error(err);
+    } else {
+          var match = data[0]
+//        var text = `Date: ${data.date}
+//Time: ${data.time}
+//Unix time: ${data.milliseconds_since_epoch}`
+    
+        console.log(match);
+        match_id.innerHTML = match.match_id
+        home_team.innerHTML = match.home_team
+        away_team.innerHTML = match.away_team
+        home_logo.innerHTML = match.home_logo
+        away_logo.innerHTML = match.away_logo
+        home_score.innerHTML = match.home_score
+        away_score.innerHTML = match.away_score
+        half.innerHTML = match.half
+    }
+});
+
+</script>
+</body>
+</html>
