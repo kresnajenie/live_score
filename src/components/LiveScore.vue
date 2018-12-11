@@ -66,6 +66,7 @@
 <script>
 import vSelect from 'vue-select'
 import api from '@/api'
+import io from 'socket.io-client'
 
 export default{
   watch: {
@@ -74,6 +75,7 @@ export default{
       var indexSchool = this.matchDisplay.indexOf(matchSchool)
       // console.log(indexSchool)
       var matchID = this.matchValue[indexSchool]
+      this.selected_match_id = matchID
       this.searchMatch(matchID)
     },
     match: function (matchDict) {
@@ -97,6 +99,10 @@ export default{
     // // console.log(this.matches)
   },
   mounted () {
+    this.socket.on('MESSAGE', (data) => {
+      console.log(data)
+      // you can also do this.messages.push(data)
+    })
     this.refreshMatches()
   },
   data () {
@@ -109,12 +115,20 @@ export default{
       awayScore: 0,
       matches: [],
       selected_match: '',
+      selected_match_id: '',
       match: {},
       matchDisplay: [],
-      matchValue: []
+      matchValue: [],
+      // socket: io('localhost:3001')
+      socket: io('https://socket.jaskapital.com')
     }
   },
   methods: {
+    sendMessage (e) {
+      console.log('send socket')
+      this.socket.emit('MATCH_ID', this.match)
+      this.message = ''
+    },
     matchSelected: function () {
       // // console.log('clickedd')
       // console.log(this.selected_match)
@@ -178,6 +192,7 @@ export default{
     async searchMatch (matchID) {
       this.matches = await api.searchMatch(matchID)
       this.match = this.matches[0]
+      this.sendMessage()
       // console.log(this.match)
     }
   }
