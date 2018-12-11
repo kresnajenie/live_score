@@ -11,6 +11,8 @@
       <small class="text-muted">by Kresna Jenie</small>
     </h1>
     <label>Pertandingan</label>
+    <h3 v-show="this.socket.connected" color="blue">LINK CONNECTED</h3>
+    <h3 v-show="!this.socket.connected" color="red">DISCONNECTED</h3>
     <v-select
         id="pertandingan"
         v-model="selected_match" :options="matchDisplay"
