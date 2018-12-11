@@ -99,7 +99,7 @@ export default{
     // // console.log(this.matches)
   },
   mounted () {
-    this.socket.on('MESSAGE', (data) => {
+    this.socket.on('match_id', (data) => {
       console.log(data)
       // you can also do this.messages.push(data)
     })
@@ -173,6 +173,7 @@ export default{
     },
     async saveMatch () {
       await api.updateMatch(this.match.id, this.match)
+      this.sendMessage()
       // // console.log('saved')
     },
     async refreshMatches () {
